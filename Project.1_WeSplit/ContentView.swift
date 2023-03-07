@@ -25,7 +25,15 @@ struct ContentView: View {
         return amountPerPerson
     }
     
+    var totalAmount: Double {
+        return checkAmount + (checkAmount / 100 * Double(tipPercentage))
+    }
+    
     @FocusState private var amountIsFocused: Bool
+    
+    var currencyIdentifier: String {
+        return Locale.current.currency?.identifier ?? "USD"
+    }
     
     var body: some View {
         NavigationView {
@@ -53,7 +61,15 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(totalPerPerson, format: .currency(code: currencyIdentifier))
+                } header: {
+                    Text("Amount per person")
+                }
+                
+                Section {
+                    Text(totalAmount, format: .currency(code:currencyIdentifier))
+                } header: {
+                    Text("Total amount")
                 }
             }
             .navigationTitle("WeSplit")
